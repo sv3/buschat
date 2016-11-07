@@ -7,20 +7,18 @@
     <script type="text/javascript" src="static/js.js"></script>
 </head>
 <body>
-    <h1>COOL BUS</h1>
+    <h1>C&nbspOOL BUS</h1>
     <p>Async mode is: <b>{{ async_mode }}</b>
     Average ping/pong latency: <b><span id="ping-pong"></span>ms</b></p>
-    <hr>
     <ol id="log" style="list-style-type:none">
-    {% for item in hist %}
+        {% for item in hist %}
         <li>{{item.rstrip('\n')}}</li>
-    {% endfor %}
+        {% endfor %}
     </ol>
-    <h2>Send:</h2>
     <form id="broadcast" method="POST">
-	<input type="text" name="name" id="name" placeholder="Name" autocomplete="off">
-        <input type="text" name="message" id="message" placeholder="Message" autocomplete="off">
-	<input type="submit" value="send">
+        <input type="text" name="name" id="name" placeholder="Name" autocomplete="off" autofocus>
+        <input type="text" name="message" id="message" placeholder="Message" autocomplete="off" required>
+    <input type="submit">
     </form>
 </body>
 </html>

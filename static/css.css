@@ -1,4 +1,14 @@
 body {
-    font-family:'Droid Sans';
+    font-family:'Droid Sans', sans-serif;
     background-color:rgb(255, 222, 52);
+    margin: 2em;
+}
+
+#log {
+    list-style-type: none;
+    background-color: white;
+    padding: 1em;
+    list-style-type: none;
+    height: 60vh;
+    overflow-y: scroll;
 }
