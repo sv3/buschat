@@ -1,36 +1,39 @@
 #!/usr/bin/env python
+import io
 from flask import Flask, render_template, session, request
-from flask_socketio import SocketIO, emit, disconnect
+from flask_socketio import SocketIO, emit, send, disconnect
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'supercalifragilistic'
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 socketio = SocketIO(app) 
+### DELETE?
 thread = None
 
-with open('history.txt') as histfile:
-    history = histfile.readlines()
-
-print history
 
 @app.route('/', methods=['GET','POST'])
 def index():
-    return render_template('index.html', async_mode=socketio.async_mode,
-	   hist=history)
+    if request.method == 'GET':
+        with io.open('history.txt') as histfile:
+            history = histfile.readlines()
+        return render_template('index.html', async_mode=socketio.async_mode,hist=history)
+    else: return ('', 204)
 
 
-@socketio.on('my_broadcast_event')
-def test_broadcast_message(message):
-    print message
-    #history.append('\n{}: {}'.format(message['name'], message['message']))
-    emit('my_response', {'message': message['data']}, broadcast=True)
+@socketio.on('message')
+def broadcast_message(msg):
+    print msg
+    if not(msg['name']) or msg['name'].isspace():
+        msg['name'] = 'anonymous'
+    entry = u'{}: {}\n'.format(msg['name'], msg['message'])
+    with io.open('history.txt', 'a') as histfile:
+        histfile.write(entry)
+    send(msg, broadcast=True)
 
 
 @socketio.on('disconnect_request')
 def disconnect_request():
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my_response',
-         {'data': 'Disconnected!', 'count': session['receive_count']})
+    emit('my_response', ['','Disconnected!'])
     disconnect()
 
 
