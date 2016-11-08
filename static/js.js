@@ -14,7 +14,7 @@ function chat() {
     // to the client. The data is then displayed under "Received"
     socket.on('message', function(msg) {
         var item = document.createElement('li');
-        item.innerHTML = msg.name + ': ' + msg.message;
+        item.innerHTML = '<strong>' + msg.name + '</strong>: ' + msg.message;
         log.appendChild(item);
         log.scrollTop = log.scrollHeight;
     });
@@ -28,12 +28,10 @@ function chat() {
     };
 
     form.addEventListener('submit', function(event) {
-        if (!form.checkValidity()){
-        }
         localStorage.name = form[0].value;
-        var message = {name:form[0].value, message:form[1].value};
+        var message = {name:form[0].value, message:form[2].value};
         socket.json.send(message);
-        form[1].value = '';
+        form[2].value = '';
         return false;
     });
     

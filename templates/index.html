@@ -2,23 +2,23 @@
 <html>
 <head>
     <title>BUS chat</title>
+    <meta name=viewport content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="static/css.css" />
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
     <script type="text/javascript" src="static/js.js"></script>
 </head>
 <body>
     <h1>C&nbspOOL BUS</h1>
-    <p>Async mode is: <b>{{ async_mode }}</b>
-    Average ping/pong latency: <b><span id="ping-pong"></span>ms</b></p>
+    
     <ol id="log" style="list-style-type:none">
         {% for item in hist %}
-        <li>{{item.rstrip('\n')}}</li>
+	<li><strong>{{item[0]}}</strong>: {{item[1]|safe}}</li>
         {% endfor %}
     </ol>
     <form id="broadcast" method="POST">
         <input type="text" name="name" id="name" placeholder="Name" autocomplete="off" autofocus>
-        <input type="text" name="message" id="message" placeholder="Message" autocomplete="off" required>
-    <input type="submit">
+        <input type="submit" value="send" id="submit">
+        <span id="formspan"><input type="text" name="message" id="message" placeholder="Message" autocomplete="off" required></span>
     </form>
 </body>
 </html>
