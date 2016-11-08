@@ -14,8 +14,11 @@ thread = None
 @app.route('/', methods=['GET','POST'])
 def index():
     if request.method == 'GET':
-        with io.open('history.txt') as histfile:
-            history = histfile.readlines()
+        try:
+            with io.open('history.txt') as histfile:
+                history = [ line.rstrip().split(':',1) for line in histfile ]
+        except IOError as e:
+            history = ''
         return render_template('index.html', async_mode=socketio.async_mode,hist=history)
     else: return ('', 204)
 
